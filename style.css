@@ -25,12 +25,29 @@ body {
 }
 
 .display {
+    position: relative;
     margin: 5rem auto 2rem;
     width: 90%;
     height: 15rem;
     background-color: rgb(245, 243, 212);
     border: 1rem rgb(211, 199, 178) solid;
     border-radius: 2rem;
+    overflow: hidden;
+    text-align: right;
+    direction: rtl;
+}
+
+#digital-numbers {
+    font-family: 'Quantico', sans-serif;
+    font-size: 6rem;
+    position: absolute;
+    bottom: 0;
+}
+
+#digital-numbers-result {
+    font-family: 'Quantico', sans-serif;
+    font-size: 3rem;
+    color: grey;
 }
 
 .buttons {
