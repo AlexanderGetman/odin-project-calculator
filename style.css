@@ -32,8 +32,7 @@ body {
     background-color: rgb(245, 243, 212);
     border: 1rem rgb(211, 199, 178) solid;
     border-radius: 2rem;
-    overflow: hidden;
-    text-align: right;
+    overflow: hidden;    
     direction: rtl;
 }
 
@@ -42,12 +41,15 @@ body {
     font-size: 6rem;
     position: absolute;
     bottom: 0;
+    unicode-bidi: plaintext;
 }
 
 #digital-numbers-result {
     font-family: 'Quantico', sans-serif;
     font-size: 3rem;
+    position: absolute;
     color: grey;
+    unicode-bidi: plaintext;
 }
 
 .buttons {

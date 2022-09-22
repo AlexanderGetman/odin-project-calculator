@@ -1,10 +1,15 @@
 const allNumberButtons = document.querySelectorAll('.number');
+const allOperatorButtons = document.querySelectorAll('.operator');
+const equalsButton = document.querySelectorAll('.equals-button');
 let currentNumberDisplay = document.getElementById("digital-numbers");
 let currentResultDisplay = document.getElementById("digital-numbers-result");
 currentNumberDisplay.innerHTML = 0;
 let currentNumber = '';
 let currentResult = '';
 let currentExpression = '';
+let currentOperator = '';
+let number1 = '';
+let number2 = '';
 
 const clearButton = document.querySelector('#clear-button');
 clearButton.addEventListener('click', clear);
@@ -39,12 +44,36 @@ function clear() {
     currentResultDisplay.innerHTML = '';
 }
 
-const allOperatorButtons = document.querySelectorAll('.operator');
-
 allOperatorButtons.forEach(element => {
-    element.addEventListener('click', processCalculation);
+    element.addEventListener('click', processOperator);
 });
 
-function processCalculation(e) {
-
+function processOperator(e) {
+    number1 = currentNumber;    
+    currentOperator = e.target.value;
+    clear();
+    currentResultDisplay.innerHTML = `${number1} ${currentOperator}`;
 }
+
+equalsButton.forEach(element => {
+    element.addEventListener('click', () => {
+        number2 = currentNumber;
+        if (currentOperator === '+') {
+            currentNumber = parseFloat(number1) + parseFloat(number2);
+            currentNumberDisplay.innerHTML = currentNumber;
+            currentResultDisplay.innerHTML = currentNumber;
+        } else if (currentOperator === '-') {
+            currentNumber = parseFloat(number1) - parseFloat(number2);
+            currentNumberDisplay.innerHTML = currentNumber;
+            currentResultDisplay.innerHTML = currentNumber;
+        } else if (currentOperator === '*') {
+            currentNumber = parseFloat(number1) * parseFloat(number2);
+            currentNumberDisplay.innerHTML = currentNumber;
+            currentResultDisplay.innerHTML = currentNumber;
+        } else if (currentOperator === '/') {
+            currentNumber = parseFloat(number1) / parseFloat(number2);
+            currentNumberDisplay.innerHTML = currentNumber;
+            currentResultDisplay.innerHTML = currentNumber;
+        }
+    });
+});
