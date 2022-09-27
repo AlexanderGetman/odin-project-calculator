@@ -12,7 +12,7 @@ let number1 = '';
 let number2 = '';
 
 const clearButton = document.querySelector('#clear-button');
-clearButton.addEventListener('click', clear);
+clearButton.addEventListener('click', clearComplete);
 
 allNumberButtons.forEach(element => {
     element.addEventListener('click', getNumber);
@@ -44,36 +44,58 @@ function clear() {
     currentResultDisplay.innerHTML = '';
 }
 
-allOperatorButtons.forEach(element => {
-    element.addEventListener('click', processOperator);
+function clearComplete() {
+    clear();
+    number1 = '';
+    number2 = '';
+}
+
+allOperatorButtons.forEach(element => {    
+    element.addEventListener('click', processOperator);    
 });
 
+function getMathResult() {
+    if (currentOperator === '+') {
+        currentNumber = parseFloat(number1) + parseFloat(number2);
+        currentNumberDisplay.innerHTML = currentNumber;
+        currentResultDisplay.innerHTML = currentNumber;                
+    } else if (currentOperator === '-') {
+        currentNumber = parseFloat(number1) - parseFloat(number2);
+        currentNumberDisplay.innerHTML = currentNumber;
+        currentResultDisplay.innerHTML = currentNumber;                
+    } else if (currentOperator === '*') {
+        currentNumber = parseFloat(number1) * parseFloat(number2);
+        currentNumberDisplay.innerHTML = currentNumber;
+        currentResultDisplay.innerHTML = currentNumber;                
+    } else if (currentOperator === '/') {
+        currentNumber = parseFloat(number1) / parseFloat(number2);
+        currentNumberDisplay.innerHTML = currentNumber;
+        currentResultDisplay.innerHTML = currentNumber;                
+    }
+    number1 = currentNumber;
+}
+
 function processOperator(e) {
-    number1 = currentNumber;    
-    currentOperator = e.target.value;
+    if (number1) {
+        number2 = currentNumber;
+    } else number1 = currentNumber;
+    
     clear();
+
+    if (number2 != '') {
+        getMathResult();
+    }
+    currentOperator = e.target.value;    
     currentResultDisplay.innerHTML = `${number1} ${currentOperator}`;
 }
 
-equalsButton.forEach(element => {
-    element.addEventListener('click', () => {
-        number2 = currentNumber;
-        if (currentOperator === '+') {
-            currentNumber = parseFloat(number1) + parseFloat(number2);
-            currentNumberDisplay.innerHTML = currentNumber;
-            currentResultDisplay.innerHTML = currentNumber;
-        } else if (currentOperator === '-') {
-            currentNumber = parseFloat(number1) - parseFloat(number2);
-            currentNumberDisplay.innerHTML = currentNumber;
-            currentResultDisplay.innerHTML = currentNumber;
-        } else if (currentOperator === '*') {
-            currentNumber = parseFloat(number1) * parseFloat(number2);
-            currentNumberDisplay.innerHTML = currentNumber;
-            currentResultDisplay.innerHTML = currentNumber;
-        } else if (currentOperator === '/') {
-            currentNumber = parseFloat(number1) / parseFloat(number2);
-            currentNumberDisplay.innerHTML = currentNumber;
-            currentResultDisplay.innerHTML = currentNumber;
-        }
+function countExpression(){
+    equalsButton.forEach(element => {
+        element.addEventListener('click', () => {
+            number2 = currentNumber;            
+            getMathResult();
+        });
     });
-});
+}
+
+countExpression();
