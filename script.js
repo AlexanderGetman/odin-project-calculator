@@ -3,6 +3,9 @@ const allOperatorButtons = document.querySelectorAll('.operator');
 const equalsButton = document.querySelectorAll('.equals-button');
 let currentNumberDisplay = document.getElementById("digital-numbers");
 let currentResultDisplay = document.getElementById("digital-numbers-result");
+let backspaceButton = document.getElementById("backspace-button");
+let changeSignButton = document.getElementById("plus-minus-button");
+let dotButton = document.getElementById("dot-button");
 currentNumberDisplay.innerHTML = 0;
 let currentNumber = '';
 let currentResult = '';
@@ -85,17 +88,81 @@ function processOperator(e) {
     if (number2 != '') {
         getMathResult();
     }
-    currentOperator = e.target.value;    
+    currentOperator = e.target.value;
     currentResultDisplay.innerHTML = `${number1} ${currentOperator}`;
 }
 
 function countExpression(){
     equalsButton.forEach(element => {
         element.addEventListener('click', () => {
-            number2 = currentNumber;            
+            number2 = currentNumber;
             getMathResult();
         });
     });
 }
 
 countExpression();
+
+document.addEventListener('keydown', (e) => {
+    getNumberKey(e);
+});
+
+function getNumberKey(e) {
+    if (Number.isFinite(parseFloat(e.key))) {
+        number = e.key;    
+        currentNumber += number;
+        currentNumber = processNumString(currentNumber);
+
+        if (currentNumber.length < 1) {
+            currentNumberDisplay.innerHTML = number;
+        } else {
+            currentNumberDisplay.innerHTML = currentNumber;
+        }
+    }
+}
+
+backspaceButton.addEventListener('click', deleteLast);
+
+function deleteLast() {
+    currentNumber = currentNumber.toString().slice(0, currentNumber.length - 1);
+    currentNumberDisplay.innerHTML = currentNumber;
+    if (!parseFloat(currentNumber)) {
+        currentNumber = 0;
+        currentNumberDisplay.innerHTML = 0;
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Backspace") {
+        e.preventDefault();
+        deleteLast();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+        e.preventDefault();
+        clear();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        number2 = currentNumber;
+        getMathResult();
+    }
+});
+
+changeSignButton.addEventListener('click', changeSign);
+
+function changeSign() {
+    currentNumber = currentNumber * -1;
+    currentNumberDisplay.innerHTML = currentNumber;
+}
+
+dotButton.addEventListener('click', addDot);
+
+function addDot() {
+    currentNumber = currentNumber + ".";    
+}
