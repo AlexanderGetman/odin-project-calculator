@@ -23,7 +23,7 @@ allNumberButtons.forEach(element => {
 
 let processNumString = function(str) {
     let floatNum = parseFloat(str);
-    let result = floatNum % 1 == 0 ? floatNum.toFixed(0) : floatNum.toFixed(1);
+    let result = floatNum % 1 == 0 ? floatNum.toFixed(0) : floatNum;
     return result;
 }
 
