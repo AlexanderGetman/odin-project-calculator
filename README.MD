@@ -1,0 +1,1 @@
+The calculator project for the Odin Project. Needs some more work.

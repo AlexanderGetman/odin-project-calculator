@@ -23,14 +23,14 @@ allNumberButtons.forEach(element => {
 
 let processNumString = function(str) {
     let floatNum = parseFloat(str);
-    let result = floatNum % 1 == 0 ? floatNum.toFixed(0) : floatNum;
+    let result = floatNum - 0;
     return result;
 }
 
 function getNumber(e) {
     number = e.target.value;
     currentNumber += number;
-    currentNumber = processNumString(currentNumber);
+    currentNumber = parseFloat(currentNumber);
 
     if (currentNumber.length < 1) {
         currentNumberDisplay.innerHTML = number;
@@ -42,7 +42,7 @@ function getNumber(e) {
 function clear() {
     number = 0;
     currentNumberDisplay.innerHTML = 0;
-    currentNumber = '';
+    currentNumber = 0;
     currentResult = '';
     currentResultDisplay.innerHTML = '';
 }
@@ -61,19 +61,23 @@ function getMathResult() {
     if (currentOperator === '+') {
         currentNumber = parseFloat(number1) + parseFloat(number2);
         currentNumberDisplay.innerHTML = currentNumber;
-        currentResultDisplay.innerHTML = currentNumber;                
+        currentResultDisplay.innerHTML = currentNumber;
+        currentOperator = '';
     } else if (currentOperator === '-') {
         currentNumber = parseFloat(number1) - parseFloat(number2);
         currentNumberDisplay.innerHTML = currentNumber;
-        currentResultDisplay.innerHTML = currentNumber;                
+        currentResultDisplay.innerHTML = currentNumber;
+        currentOperator = '';
     } else if (currentOperator === '*') {
         currentNumber = parseFloat(number1) * parseFloat(number2);
         currentNumberDisplay.innerHTML = currentNumber;
-        currentResultDisplay.innerHTML = currentNumber;                
+        currentResultDisplay.innerHTML = currentNumber;
+        currentOperator = '';
     } else if (currentOperator === '/') {
         currentNumber = parseFloat(number1) / parseFloat(number2);
         currentNumberDisplay.innerHTML = currentNumber;
-        currentResultDisplay.innerHTML = currentNumber;                
+        currentResultDisplay.innerHTML = currentNumber;
+        currentOperator = '';
     }
     number1 = currentNumber;
 }
@@ -85,9 +89,6 @@ function processOperator(e) {
     
     clear();
 
-    if (number2 != '') {
-        getMathResult();
-    }
     currentOperator = e.target.value;
     currentResultDisplay.innerHTML = `${number1} ${currentOperator}`;
 }
@@ -96,7 +97,7 @@ function countExpression(){
     equalsButton.forEach(element => {
         element.addEventListener('click', () => {
             number2 = currentNumber;
-            getMathResult();
+            getMathResult();            
         });
     });
 }
@@ -105,6 +106,7 @@ countExpression();
 
 document.addEventListener('keydown', (e) => {
     getNumberKey(e);
+    getOperatorKey(e);
 });
 
 function getNumberKey(e) {
@@ -124,8 +126,10 @@ function getNumberKey(e) {
 backspaceButton.addEventListener('click', deleteLast);
 
 function deleteLast() {
-    currentNumber = currentNumber.toString().slice(0, currentNumber.length - 1);
+    currentNumber = currentNumber.toString();
+    currentNumber = currentNumber.slice(0, currentNumber.length - 1);
     currentNumberDisplay.innerHTML = currentNumber;
+    
     if (!parseFloat(currentNumber)) {
         currentNumber = 0;
         currentNumberDisplay.innerHTML = 0;
@@ -158,6 +162,10 @@ changeSignButton.addEventListener('click', changeSign);
 
 function changeSign() {
     currentNumber = currentNumber * -1;
+    if (number1) {
+        number2 = currentNumber;
+    } else number1 = currentNumber;
+    
     currentNumberDisplay.innerHTML = currentNumber;
 }
 
@@ -165,4 +173,19 @@ dotButton.addEventListener('click', addDot);
 
 function addDot() {
     currentNumber = currentNumber + ".";    
+}
+
+let operators = ['/', '+', '-', '*'];
+
+function getOperatorKey(e) {
+    if (operators.includes(e.key)) {
+        if (number1) {
+            number2 = currentNumber;
+        } else number1 = currentNumber;
+        
+        clear();
+    
+        currentOperator = e.key;
+        currentResultDisplay.innerHTML = `${number1} ${currentOperator}`;
+    }
 }
